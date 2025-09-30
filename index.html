@@ -601,20 +601,50 @@
             }
         }
         
-        function submitEmail(event) {
+        async function submitEmail(event) {
             event.preventDefault();
             
             userData.name = document.getElementById('userName').value;
             userData.email = document.getElementById('userEmail').value;
             
-            // In production, this would send data to your backend/database
-            console.log('User Data:', userData);
-            console.log('Answers:', answers);
+            // Disable submit button while processing
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Saving...';
             
-            // Show results
-            calculateResults();
-            document.getElementById('emailScreen').classList.add('hidden');
-            document.getElementById('resultsScreen').classList.remove('hidden');
+            try {
+                // Send data to Netlify function
+                const response = await fetch('/.netlify/functions/submit-quiz', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: userData.name,
+                        email: userData.email,
+                        answers: answers
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(result.error || 'Failed to submit quiz');
+                }
+                
+                console.log('Quiz saved successfully:', result);
+                
+                // Show results
+                calculateResults();
+                document.getElementById('emailScreen').classList.add('hidden');
+                document.getElementById('resultsScreen').classList.remove('hidden');
+                
+            } catch (error) {
+                console.error('Error submitting quiz:', error);
+                alert('There was an error saving your results. Please try again.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'View My Results';
+            }
         }
         
         function calculateResults() {
