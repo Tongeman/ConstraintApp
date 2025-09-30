@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Constraint Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        
+        .intro {
+            padding: 40px;
+            line-height: 1.8;
+            color: #333;
+        }
+        
+        .intro p {
+            margin-bottom: 20px;
+        }
+        
+        .intro ul {
+            list-style: none;
+            margin: 20px 0;
+        }
+        
+        .intro li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .intro li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        
+        .progress-text {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .question-container {
+            display: none;
+            animation: fadeIn 0.4s;
+        }
+        
+        .question-container.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .question-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+        
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: flex-start;
+            padding: 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .radio-option:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+            transform: translateX(5px);
+        }
+        
+        .radio-option input[type="radio"] {
+            margin-right: 15px;
+            margin-top: 4px;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+        
+        .radio-option.selected {
+            border-color: #667eea;
+            background: #f8f9ff;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+        
+        .option-text {
+            flex: 1;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .option-number {
+            font-weight: 600;
+            color: #667eea;
+            margin-right: 8px;
+        }
+        
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+        }
+        
+        .btn {
+            flex: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn-secondary:hover:not(:disabled) {
+            box-shadow: 0 10px 20px rgba(108, 117, 125, 0.3);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .email-form {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .results {
+            animation: fadeIn 0.5s;
+        }
+        
+        .results h2 {
+            color: #667eea;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        
+        .results h3 {
+            color: #667eea;
+            font-size: 22px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        .constraint-highlight {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .constraint-highlight h3 {
+            color: #856404;
+            margin-top: 0;
+        }
+        
+        .score-summary {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .score-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .score-item:last-child {
+            border-bottom: none;
+        }
+        
+        .score-label {
+            color: #555;
+        }
+        
+        .score-value {
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        .recommendations {
+            line-height: 1.8;
+            color: #555;
+        }
+        
+        .recommendations p {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Find Your Business Growth Constraint</h1>
+        </div>
+        
+        <!-- Introduction Screen -->
+        <div id="introScreen" class="intro">
+            <p>Every business typically has a single constraint limiting its growth. If you want to scale, you have to find and resolve that constraint.</p>
+            
+            <p>Most CEOs waste resources improving areas that don't actually matter while the real bottleneck quietly chokes their progress. This quick quiz will help you identify exactly where your growth is stuck, so you can focus your efforts where they'll actually make a difference.</p>
+            
+            <ul>
+                <li>Takes less than 5 minutes to complete</li>
+                <li>Get instant, actionable insights specific to your business</li>
+                <li>Identify your #1 constraint with precision</li>
+                <li>Discover exactly where to focus for maximum growth impact</li>
+            </ul>
+            
+            <button class="btn" onclick="startQuiz()" style="margin-top: 30px; width: 100%;">Start the Quiz</button>
+        </div>
+        
+        <!-- Quiz Questions -->
+        <div id="quizScreen" class="content hidden">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+            <div class="progress-text" id="progressText">Question 1 of 9</div>
+            
+            <div id="questionsContainer"></div>
+            
+            <div class="btn-container">
+                <button class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()" disabled>Previous</button>
+                <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>Next</button>
+            </div>
+        </div>
+        
+        <!-- Email Capture -->
+        <div id="emailScreen" class="content hidden">
+            <div class="email-form">
+                <h2 style="text-align: center; color: #667eea; margin-bottom: 20px;">Almost There!</h2>
+                <p style="text-align: center; margin-bottom: 30px; color: #555;">Enter your details to see your personalized results</p>
+                
+                <form id="emailForm" onsubmit="submitEmail(event)">
+                    <div class="form-group">
+                        <label for="userName">Name</label>
+                        <input type="text" id="userName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="userEmail">Email</label>
+                        <input type="email" id="userEmail" required>
+                    </div>
+                    
+                    <button type="submit" class="btn" style="width: 100%;">View My Results</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="content hidden">
+            <div class="results">
+                <h2>Your Business Constraint Analysis</h2>
+                
+                <div class="constraint-highlight">
+                    <h3 id="primaryConstraint"></h3>
+                    <p id="constraintDescription"></p>
+                </div>
+                
+                <h3>Your Scores</h3>
+                <div class="score-summary" id="scoresSummary"></div>
+                
+                <h3>Recommendations</h3>
+                <div class="recommendations" id="recommendationsText"></div>
+                
+                <button class="btn" onclick="resetQuiz()" style="margin-top: 30px; width: 100%;">Take Quiz Again</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Quiz data
+        const questions = [
+            {
+                id: 'cash',
+                title: 'I know my cash position 8–13 weeks ahead.',
+                category: 'Cash Flow',
+                options: [
+                    { value: 1, text: 'No visibility – I don\'t track this at all.' },
+                    { value: 2, text: 'Vague sense – I have only a rough idea, not based on reliable data.' },
+                    { value: 3, text: 'Ad-hoc – I can work it out if needed, but it\'s not a regular report.' },
+                    { value: 4, text: 'Monthly forecasting – I track cash monthly and can project a few weeks ahead.' },
+                    { value: 5, text: 'Clear foresight – I run accurate weekly forecasts and know my cash position 8–13 weeks out.' }
+                ]
+            },
+            {
+                id: 'sales',
+                title: 'How did your sales in the past 12 months compare to the previous 12 months?',
+                category: 'Sales Growth',
+                options: [
+                    { value: 1, text: 'Declining – Sales have dropped; we\'re shrinking rather than growing.' },
+                    { value: 2, text: 'Flat – Sales are about the same as the year before; we\'re not growing.' },
+                    { value: 3, text: 'Small growth – Sales grew slightly (under 10%), but not in line with our ambitions.' },
+                    { value: 4, text: 'Healthy growth – Sales grew steadily (10–25%) and we can see what\'s working.' },
+                    { value: 5, text: 'Scalable growth – Sales grew significantly (25%+), and we have a clear, repeatable growth model driving results.' }
+                ]
+            },
+            {
+                id: 'dependency',
+                title: 'If you stepped away from the business for 3 months, what would happen?',
+                category: 'Business Dependency',
+                options: [
+                    { value: 1, text: 'Chaos – The business would grind to a halt without me.' },
+                    { value: 2, text: 'Firefighting – Some things would get done, but major issues would pile up.' },
+                    { value: 3, text: 'Partial stability – The team could manage day-to-day, but growth or strategy would stall.' },
+                    { value: 4, text: 'Well-managed – The business would run smoothly with regular meetings, processes, and accountability in place.' },
+                    { value: 5, text: 'Exit-ready – The business could operate and grow without me, making it attractive to a buyer or investor.' }
+                ]
+            },
+            {
+                id: 'marketing',
+                title: 'How consistently does your marketing hit or exceed your lead generation targets?',
+                category: 'Marketing Performance',
+                options: [
+                    { value: 1, text: 'No formal targets – We don\'t set lead targets or track performance against them.' },
+                    { value: 2, text: 'Unpredictable – We have targets but rarely hit them; results are inconsistent month to month.' },
+                    { value: 3, text: 'Hit occasionally – We hit targets some months but miss others; roughly 50/50.' },
+                    { value: 4, text: 'Consistently hit – We meet our lead targets most months (75%+ of the time).' },
+                    { value: 5, text: 'Consistently exceed – We regularly surpass targets and have capacity to generate more when needed.' }
+                ]
+            },
+            {
+                id: 'salesProcess',
+                title: 'If you doubled your leads tomorrow, how confident are you that your sales process would convert them into paying customers?',
+                category: 'Sales Process',
+                options: [
+                    { value: 1, text: 'No process – We don\'t have a defined sales process; results depend on me or one key person.' },
+                    { value: 2, text: 'Inconsistent – We sometimes close sales, but conversion rates are unpredictable.' },
+                    { value: 3, text: 'Basic process – We have a repeatable sales method, but it depends heavily on individual effort.' },
+                    { value: 4, text: 'Reliable process – We have a consistent, measurable sales process that delivers steady conversion rates.' },
+                    { value: 5, text: 'Scalable machine – We can confidently scale; adding more leads produces more customers without breaking our sales system.' }
+                ]
+            },
+            {
+                id: 'customerSatisfaction',
+                title: 'How well do you consistently delight customers with your products and service?',
+                category: 'Customer Satisfaction',
+                options: [
+                    { value: 1, text: 'No visibility – I don\'t know — we don\'t track customer satisfaction, reviews, or repeat business.' },
+                    { value: 2, text: 'Mixed signals – We get some positive feedback, but also complaints or one-star reviews.' },
+                    { value: 3, text: 'Generally satisfied – Most customers seem happy, but delight is inconsistent and repeat business is patchy.' },
+                    { value: 4, text: 'Consistently positive – We reliably get good reviews, repeat purchases, and strong customer satisfaction.' },
+                    { value: 5, text: 'Delight at scale – We consistently generate five-star reviews, repeat customers, and referrals as a result of our systems.' }
+                ]
+            },
+            {
+                id: 'leadership',
+                title: 'How well are you performing as a leader — creating culture, supporting your team, and focusing on your strengths?',
+                category: 'Leadership',
+                options: [
+                    { value: 1, text: 'No clarity – I don\'t know how I\'m performing as a leader; I haven\'t had feedback or measured it.' },
+                    { value: 2, text: 'Reactive leader – I set the tone day to day, but I often get dragged into tasks I\'m not good at.' },
+                    { value: 3, text: 'Developing leader – I try to build culture and support the team, but I still carry too much of the load myself.' },
+                    { value: 4, text: 'Effective leader – I focus mainly on leading, creating culture, and enabling others to perform, while avoiding tasks outside my strengths.' },
+                    { value: 5, text: 'Strategic leader – I set vision, culture, and direction, while the team thrives because I work almost entirely in my strengths.' }
+                ]
+            },
+            {
+                id: 'team',
+                title: 'How competent are the team who work with you?',
+                category: 'Team Competence',
+                options: [
+                    { value: 1, text: 'No visibility – I don\'t really know how well my team performs; I\'m not tracking or measuring it.' },
+                    { value: 2, text: 'Dependent on me – The team relies on me for most decisions; without me, progress stalls.' },
+                    { value: 3, text: 'Operational support – I have some good people, but they mostly manage tasks, not drive performance.' },
+                    { value: 4, text: 'Accountable team – I have a leadership team that takes ownership, drives performance, and holds regular reviews.' },
+                    { value: 5, text: 'High-performance culture – The team operates at a high level with accountability, shared leadership, and a culture that drives results without me needing to push.' }
+                ]
+            },
+            {
+                id: 'systems',
+                title: 'How well are your systems defined? Are they efficient and able to flag problems before they grow?',
+                category: 'Systems & Processes',
+                options: [
+                    { value: 1, text: 'Ad-hoc processes – Work gets done, but every person does it differently and we don\'t have regular management meetings.' },
+                    { value: 2, text: 'Some structure – A few workflows are documented, but most are informal and meetings are irregular or unfocused.' },
+                    { value: 3, text: 'Defined but patchy – Most jobs are defined and meetings happen regularly, but efficiency is inconsistent and problems often escalate before being noticed.' },
+                    { value: 4, text: 'Well-managed systems – Clear workflows and regular management rhythms drive efficiency and highlight issues early enough to act.' },
+                    { value: 5, text: 'Optimised & scalable – We run efficient, documented systems with strong communication and management processes that consistently surface and solve problems before they grow.' }
+                ]
+            }
+        ];
+        
+        let currentQuestion = 0;
+        let answers = {};
+        let userData = {};
+        
+        function startQuiz() {
+            document.getElementById('introScreen').classList.add('hidden');
+            document.getElementById('quizScreen').classList.remove('hidden');
+            renderQuestions();
+            showQuestion(0);
+        }
+        
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question-container';
+                questionDiv.id = `question-${index}`;
+                
+                let optionsHtml = '';
+                q.options.forEach((option, optIndex) => {
+                    optionsHtml += `
+                        <label class="radio-option" data-question="${index}" data-value="${option.value}">
+                            <input type="radio" name="q${index}" value="${option.value}" onchange="selectAnswer(${index}, ${option.value})">
+                            <span class="option-text">
+                                <span class="option-number">${option.value}.</span>
+                                ${option.text}
+                            </span>
+                        </label>
+                    `;
+                });
+                
+                questionDiv.innerHTML = `
+                    <div class="question-title">${q.title}</div>
+                    <div class="radio-group">
+                        ${optionsHtml}
+                    </div>
+                `;
+                
+                container.appendChild(questionDiv);
+            });
+        }
+        
+        function showQuestion(index) {
+            document.querySelectorAll('.question-container').forEach(q => q.classList.remove('active'));
+            document.getElementById(`question-${index}`).classList.add('active');
+            
+            currentQuestion = index;
+            updateProgress();
+            updateButtons();
+        }
+        
+        function selectAnswer(questionIndex, value) {
+            answers[questions[questionIndex].id] = value;
+            
+            // Update visual selection
+            document.querySelectorAll(`[data-question="${questionIndex}"]`).forEach(option => {
+                option.classList.remove('selected');
+            });
+            document.querySelector(`[data-question="${questionIndex}"][data-value="${value}"]`).classList.add('selected');
+            
+            updateButtons();
+        }
+        
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+        }
+        
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            prevBtn.disabled = currentQuestion === 0;
+            
+            const currentAnswered = answers[questions[currentQuestion].id] !== undefined;
+            nextBtn.disabled = !currentAnswered;
+            
+            if (currentQuestion === questions.length - 1 && currentAnswered) {
+                nextBtn.textContent = 'Complete';
+            } else {
+                nextBtn.textContent = 'Next';
+            }
+        }
+        
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                showQuestion(currentQuestion + 1);
+            } else {
+                // Quiz complete, show email form
+                document.getElementById('quizScreen').classList.add('hidden');
+                document.getElementById('emailScreen').classList.remove('hidden');
+            }
+        }
+        
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                showQuestion(currentQuestion - 1);
+            }
+        }
+        
+        function submitEmail(event) {
+            event.preventDefault();
+            
+            userData.name = document.getElementById('userName').value;
+            userData.email = document.getElementById('userEmail').value;
+            
+            // In production, this would send data to your backend/database
+            console.log('User Data:', userData);
+            console.log('Answers:', answers);
+            
+            // Show results
+            calculateResults();
+            document.getElementById('emailScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.remove('hidden');
+        }
+        
+        function calculateResults() {
+            // Find the lowest score (primary constraint)
+            let lowestScore = 5;
+            let primaryConstraintId = null;
+            
+            // Check each answer in order (for tie-breaking)
+            questions.forEach(q => {
+                const score = answers[q.id];
+                if (score < lowestScore) {
+                    lowestScore = score;
+                    primaryConstraintId = q.id;
+                }
+            });
+            
+            const primaryConstraint = questions.find(q => q.id === primaryConstraintId);
+            
+            // Display primary constraint
+            document.getElementById('primaryConstraint').textContent = `Your Primary Constraint: ${primaryConstraint.category}`;
+            document.getElementById('constraintDescription').textContent = `Based on your responses, ${primaryConstraint.category.toLowerCase()} is the biggest bottleneck limiting your business growth right now.`;
+            
+            // Display all scores
+            let scoresHtml = '';
+            questions.forEach(q => {
+                const score = answers[q.id];
+                scoresHtml += `
+                    <div class="score-item">
+                        <span class="score-label">${q.category}</span>
+                        <span class="score-value">${score}/5</span>
+                    </div>
+                `;
+            });
+            document.getElementById('scoresSummary').innerHTML = scoresHtml;
+            
+            // Generate recommendations based on constraint
+            const recommendations = getRecommendations(primaryConstraintId, lowestScore);
+            document.getElementById('recommendationsText').innerHTML = recommendations;
+        }
+        
+        function getRecommendations(constraintId, score) {
+            // Placeholder recommendations - will be replaced with AI-generated content
+            const recommendationsMap = {
+                cash: `
+                    <p><strong>Your cash flow visibility needs immediate attention.</strong> Without clear cash forecasting, you're flying blind and risking sudden cash crunches that could derail your growth.</p>
+                    <p><strong>Quick wins:</strong> Implement weekly cash flow forecasting. Set up a simple spreadsheet tracking your cash position for the next 8-13 weeks. Review it every Monday morning.</p>
+                    <p><strong>Next level:</strong> Consider cash flow management software and work with your accountant to establish rolling 13-week cash forecasts with scenario planning.</p>
+                `,
+                sales: `
+                    <p><strong>Sales growth is your constraint.</strong> Until you crack predictable revenue growth, everything else takes a back seat.</p>
+                    <p><strong>Quick wins:</strong> Analyze your best customers from the past year. What do they have in common? Double down on acquiring more customers that fit this profile.</p>
+                    <p><strong>Next level:</strong> Build a sales growth model that identifies your key growth levers (pricing, volume, new products) and test strategies to move each lever systematically.</p>
+                `,
+                dependency: `
+                    <p><strong>Your business is too dependent on you.</strong> This limits growth and makes your business less valuable. You're the bottleneck.</p>
+                    <p><strong>Quick wins:</strong> Document your three most critical processes this week. Record a video walkthrough of each. Delegate one of them to someone on your team.</p>
+                    <p><strong>Next level:</strong> Build a second-in-command or management team that can handle operations while you focus on strategy. Create systems and standard operating procedures for all key functions.</p>
+                `,
+                marketing: `
+                    <p><strong>Marketing performance is holding you back.</strong> Without consistent lead generation, your sales team has nothing to work with.</p>
+                    <p><strong>Quick wins:</strong> Set a specific monthly lead target. Track it weekly. Test one new lead generation channel this month and measure results rigorously.</p>
+                    <p><strong>Next level:</strong> Build a marketing system with multiple proven channels that consistently deliver qualified leads. Implement proper attribution tracking to know what's actually working.</p>
+                `,
+                salesProcess: `
+                    <p><strong>Your sales process can't scale.</strong> Even if you doubled your leads tomorrow, you wouldn't be able to convert them effectively.</p>
+                    <p><strong>Quick wins:</strong> Document your current sales process step-by-step. Identify where prospects get stuck or drop off. Fix the biggest leak first.</p>
+                    <p><strong>Next level:</strong> Create a standardized sales process with clear stages, scripts, and conversion metrics. Train your team on it and measure performance at each stage.</p>
+                `,
+                customerSatisfaction: `
+                    <p><strong>Customer satisfaction and delivery need work.</strong> If you can't consistently delight customers, growth will always be harder than it should be.</p>
+                    <p><strong>Quick wins:</strong> Implement a simple Net Promoter Score (NPS) survey. Ask every customer: "How likely are you to recommend us?" (0-10). Follow up with the lowest scorers immediately.</p>
+                    <p><strong>Next level:</strong> Build systematic feedback loops, quality control processes, and customer success systems that ensure every customer has a great experience.</p>
+                `,
+                leadership: `
+                    <p><strong>Your leadership effectiveness is the constraint.</strong> Everything flows from how well you lead, and right now you're not operating at full capacity.</p>
+                    <p><strong>Quick wins:</strong> Get 360-degree feedback from your team, peers, and mentors. Identify your top three leadership strengths and weaknesses. Commit to spending 80% of your time on your strengths.</p>
+                    <p><strong>Next level:</strong> Work with an executive coach. Build a personal development plan. Create a culture document and live it daily. Focus ruthlessly on strategy and culture while delegating everything else.</p>
+                `,
+                team: `
+                    <p><strong>Your team's competence is limiting growth.</strong> You can't scale beyond the capability of your people.</p>
+                    <p><strong>Quick wins:</strong> Assess each team member's performance objectively. Identify your A-players and give them more responsibility. Address underperformance directly - coach them up or move them out.</p>
+                    <p><strong>Next level:</strong> Build a high-performance culture with clear expectations, regular reviews, and accountability. Upgrade your hiring process to attract A-players. Create development paths for your best people.</p>
+                `,
+                systems: `
+                    <p><strong>Your systems and processes are holding you back.</strong> Without solid systems, you're constantly firefighting instead of growing.</p>
+                    <p><strong>Quick wins:</strong> Document your three most important business processes. Schedule weekly management meetings with a clear agenda. Implement a simple project management tool for visibility.</p>
+                    <p><strong>Next level:</strong> Build comprehensive standard operating procedures (SOPs) for all key functions. Implement management rhythms (daily huddles, weekly reviews, monthly planning). Create dashboards that surface problems early.</p>
+                `
+            };
+            
+            return recommendationsMap[constraintId] || '<p>Focus on improving this area to unlock your business growth.</p>';
+        }
+        
+        function resetQuiz() {
+            currentQuestion = 0;
+            answers = {};
+            userData = {};
+            
+            // Reset all radio buttons
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.checked = false;
+            });
+            
+            // Reset visual selections
+            document.querySelectorAll('.radio-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Reset form
+            document.getElementById('emailForm').reset();
+            
+            // Show intro screen
+            document.getElementById('resultsScreen').classList.add('hidden');
+            document.getElementById('introScreen').classList.remove('hidden');
+        }
+            
