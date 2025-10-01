@@ -58,7 +58,7 @@ const quizConfig = {
       id: 'marketing',
       title: 'How consistently does your marketing hit or exceed your lead generation targets?',
       category: 'Marketing Performance',
-      introduction: 'Without a steady flow of new leads, your sales pipeline runs dry and growth stalls. Consistent lead generation is the foundation of predictable revenue—if you can't count on new prospects coming in, everything else becomes a scramble.',
+      introduction: 'Without a steady flow of new leads, your sales pipeline runs dry and growth stalls. Consistent lead generation is the foundation of predictable revenue—if you can\'t count on new prospects coming in, everything else becomes a scramble.',
       options: [
         { value: 1, text: 'No formal targets – We don\'t set lead targets or track performance against them.' },
         { value: 2, text: 'Unpredictable – We have targets but rarely hit them; results are inconsistent month to month.' },
