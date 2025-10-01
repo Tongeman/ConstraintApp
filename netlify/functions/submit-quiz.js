@@ -27,12 +27,12 @@ async function addToConvertKit(email, name, constraintType) {
   try {
     const tagName = constraintTags[constraintType];
     
-    // V4 API - Add subscriber with tag
-    const response = await fetch(`https://api.convertkit.com/v4/subscribers`, {
+    // V4 API with correct header
+    const response = await fetch(`https://api.kit.com/v4/subscribers`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${CONVERTKIT_API_SECRET}`
+        'X-Kit-Api-Key': CONVERTKIT_API_SECRET
       },
       body: JSON.stringify({
         email_address: email,
@@ -45,7 +45,6 @@ async function addToConvertKit(email, name, constraintType) {
     
     if (!response.ok) {
       console.error('ConvertKit V4 error:', data);
-	  console.error('ConvertKit V4 access:', {CONVERTKIT_API_SECRET});
       console.error('Response status:', response.status);
       throw new Error(data.message || data.error || 'Failed to add to ConvertKit');
     }
