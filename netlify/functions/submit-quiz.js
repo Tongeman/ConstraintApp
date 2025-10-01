@@ -108,7 +108,7 @@ exports.handler = async (event, context) => {
   try {
     // Parse the incoming data
     const data = JSON.parse(event.body);
-    const { name, email, answers } = data;
+    const { name, email, emailConsent, answers } = data;
 
     // Validate required fields
     if (!name || !email || !answers) {
@@ -127,7 +127,7 @@ exports.handler = async (event, context) => {
     // Insert user into Supabase
     const { data: userData, error: userError } = await supabase
       .from('users')
-      .insert([{ name, email }])
+      .insert([{ name, email, email_consent: emailConsent }])
       .select()
       .single();
 
