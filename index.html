@@ -117,6 +117,17 @@
             margin-bottom: 30px;
             line-height: 1.4;
         }
+		
+		.question-introduction {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9ff;
+            border-left: 3px solid #667eea;
+            border-radius: 4px;
+        }
         
         .radio-group {
             display: flex;
@@ -431,11 +442,12 @@
                 });
                 
                 questionDiv.innerHTML = `
-                    <div class="question-title">${q.title}</div>
-                    <div class="radio-group">
-                        ${optionsHtml}
-                    </div>
-                `;
+                     ${q.introduction ? `<div class="question-introduction">${q.introduction}</div>` : ''}
+                     <div class="question-title">${q.title}</div>
+                     <div class="radio-group">
+                          ${optionsHtml}
+                     </div>
+                 `;
                 
                 container.appendChild(questionDiv);
             });
