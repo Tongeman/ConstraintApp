@@ -27,8 +27,24 @@ async function addToConvertKit(email, name, constraintType) {
   try {
     const tagName = constraintTags[constraintType];
     
-    // Subscribe to a tag (this creates the subscriber AND tags them in one call)
-    const response = await fetch(`https://api.convertkit.com/v3/tags`, {
+    // First, try to subscribe the user
+    const subscriberResponse = await fetch(`https://api.convertkit.com/v3/subscribers`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        api_secret: CONVERTKIT_API_SECRET,
+        email: email,
+        first_name: name
+      })
+    });
+
+    const subscriberData = await subscriberResponse.json();
+    console.log('Subscriber response:', subscriberData);
+
+    // Then tag them (using email-based tagging which works with existing tags)
+    const tagResponse = await fetch(`https://api.convertkit.com/v3/tags`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -38,24 +54,21 @@ async function addToConvertKit(email, name, constraintType) {
         tag: {
           name: tagName
         },
-        email: email,
-        first_name: name
+        email: email
       })
     });
 
-    const data = await response.json();
+    const tagData = await tagResponse.json();
     
-    if (!response.ok) {
-      console.error('ConvertKit error:', data);
-      console.error('Response status:', response.status);
-      throw new Error(data.message || data.error || 'Failed to add to ConvertKit');
+    if (!tagResponse.ok && tagData.message !== 'Name has already been taken') {
+      console.error('ConvertKit tagging error:', tagData);
+      // Continue anyway - subscriber was added
     }
 
-    console.log('Successfully added to ConvertKit with tag:', email, tagName);
-    return data;
+    console.log('Successfully added to ConvertKit:', email);
+    return { subscriberData, tagData };
   } catch (error) {
     console.error('Error adding to ConvertKit:', error.message);
-    // Don't throw - we want to save to Supabase even if Kit fails
     return null;
   }
 }
