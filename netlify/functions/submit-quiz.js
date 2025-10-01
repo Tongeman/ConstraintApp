@@ -25,17 +25,21 @@ const constraintTags = {
 
 async function addToConvertKit(email, name, constraintType) {
   try {
-    // Add subscriber to ConvertKit
-    const response = await fetch(`${CONVERTKIT_API_URL}/subscribers`, {
+    const tagName = constraintTags[constraintType];
+    
+    // Subscribe to a tag (this creates the subscriber AND tags them in one call)
+    const response = await fetch(`https://api.convertkit.com/v3/tags`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         api_secret: CONVERTKIT_API_SECRET,
+        tag: {
+          name: tagName
+        },
         email: email,
-        first_name: name,
-        tags: [constraintTags[constraintType]]
+        first_name: name
       })
     });
 
@@ -43,13 +47,14 @@ async function addToConvertKit(email, name, constraintType) {
     
     if (!response.ok) {
       console.error('ConvertKit error:', data);
-      throw new Error(data.message || 'Failed to add to ConvertKit');
+      console.error('Response status:', response.status);
+      throw new Error(data.message || data.error || 'Failed to add to ConvertKit');
     }
 
-    console.log('Successfully added to ConvertKit:', email);
+    console.log('Successfully added to ConvertKit with tag:', email, tagName);
     return data;
   } catch (error) {
-    console.error('Error adding to ConvertKit:', error);
+    console.error('Error adding to ConvertKit:', error.message);
     // Don't throw - we want to save to Supabase even if Kit fails
     return null;
   }
