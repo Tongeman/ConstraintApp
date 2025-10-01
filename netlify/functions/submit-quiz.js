@@ -27,46 +27,30 @@ async function addToConvertKit(email, name, constraintType) {
   try {
     const tagName = constraintTags[constraintType];
     
-    // First, try to subscribe the user
-    const subscriberResponse = await fetch(`https://api.convertkit.com/v3/subscribers`, {
+    // V4 API - Add subscriber with tag
+    const response = await fetch(`https://api.convertkit.com/v4/subscribers`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${CONVERTKIT_API_SECRET}`
       },
       body: JSON.stringify({
-        api_secret: CONVERTKIT_API_SECRET,
-        email: email,
-        first_name: name
+        email_address: email,
+        first_name: name,
+        tags: [tagName]
       })
     });
 
-    const subscriberData = await subscriberResponse.json();
-    console.log('Subscriber response:', subscriberData);
-
-    // Then tag them (using email-based tagging which works with existing tags)
-    const tagResponse = await fetch(`https://api.convertkit.com/v3/tags`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        api_secret: CONVERTKIT_API_SECRET,
-        tag: {
-          name: tagName
-        },
-        email: email
-      })
-    });
-
-    const tagData = await tagResponse.json();
+    const data = await response.json();
     
-    if (!tagResponse.ok && tagData.message !== 'Name has already been taken') {
-      console.error('ConvertKit tagging error:', tagData);
-      // Continue anyway - subscriber was added
+    if (!response.ok) {
+      console.error('ConvertKit V4 error:', data);
+      console.error('Response status:', response.status);
+      throw new Error(data.message || data.error || 'Failed to add to ConvertKit');
     }
 
-    console.log('Successfully added to ConvertKit:', email);
-    return { subscriberData, tagData };
+    console.log('Successfully added to ConvertKit V4:', email, 'with tag:', tagName);
+    return data;
   } catch (error) {
     console.error('Error adding to ConvertKit:', error.message);
     return null;
