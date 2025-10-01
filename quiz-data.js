@@ -19,7 +19,7 @@ const quizConfig = {
       id: 'cash',
       title: 'I know my cash position 8–13 weeks ahead.',
       category: 'Cash Flow',
-      introduction: '', // We'll add these in step 3
+      introduction: 'Cash is the lifeblood of your business. If you can\'t predict your cash position weeks ahead, you\'re flying blind and one unexpected expense or late payment could put you in crisis.', 
       options: [
         { value: 1, text: 'No visibility – I don\'t track this at all.' },
         { value: 2, text: 'Vague sense – I have only a rough idea, not based on reliable data.' },
@@ -32,7 +32,7 @@ const quizConfig = {
       id: 'sales',
       title: 'How did your sales in the past 12 months compare to the previous 12 months?',
       category: 'Sales Growth',
-      introduction: '',
+      introduction: 'Growth doesn\'t happen by accident—it requires intentional planning and execution. Your recent sales trend reveals whether your growth strategy is actually working or if you're stuck in place.',
       options: [
         { value: 1, text: 'Declining – Sales have dropped; we\'re shrinking rather than growing.' },
         { value: 2, text: 'Flat – Sales are about the same as the year before; we\'re not growing.' },
@@ -45,7 +45,7 @@ const quizConfig = {
       id: 'dependency',
       title: 'If you stepped away from the business for 3 months, what would happen?',
       category: 'Business Dependency',
-      introduction: '',
+      introduction: 'If your business can\'t run without you, you don\'t own a business—you own a job. A company that depends entirely on the CEO has limited value and traps you in daily operations instead of strategic leadership.',
       options: [
         { value: 1, text: 'Chaos – The business would grind to a halt without me.' },
         { value: 2, text: 'Firefighting – Some things would get done, but major issues would pile up.' },
@@ -58,7 +58,7 @@ const quizConfig = {
       id: 'marketing',
       title: 'How consistently does your marketing hit or exceed your lead generation targets?',
       category: 'Marketing Performance',
-      introduction: '',
+      introduction: 'Without a steady flow of new leads, your sales pipeline runs dry and growth stalls. Consistent lead generation is the foundation of predictable revenue—if you can't count on new prospects coming in, everything else becomes a scramble.',
       options: [
         { value: 1, text: 'No formal targets – We don\'t set lead targets or track performance against them.' },
         { value: 2, text: 'Unpredictable – We have targets but rarely hit them; results are inconsistent month to month.' },
@@ -71,7 +71,7 @@ const quizConfig = {
       id: 'salesProcess',
       title: 'If you doubled your leads tomorrow, how confident are you that your sales process would convert them into paying customers?',
       category: 'Sales Process',
-      introduction: '',
+      introduction: 'More leads mean nothing if you can't convert them into customers. A weak sales process wastes your marketing investment and leaves money on the table—no matter how many prospects you attract.',
       options: [
         { value: 1, text: 'No process – We don\'t have a defined sales process; results depend on me or one key person.' },
         { value: 2, text: 'Inconsistent – We sometimes close sales, but conversion rates are unpredictable.' },
@@ -84,7 +84,7 @@ const quizConfig = {
       id: 'customerSatisfaction',
       title: 'How well do you consistently delight customers with your products and service?',
       category: 'Customer Satisfaction',
-      introduction: '',
+      introduction: 'Happy customers buy again and refer others—unhappy ones disappear silently or damage your reputation online. Consistent customer delight isn\'t just nice to have; it\'s your most cost-effective growth engine.',
       options: [
         { value: 1, text: 'No visibility – I don\'t know — we don\'t track customer satisfaction, reviews, or repeat business.' },
         { value: 2, text: 'Mixed signals – We get some positive feedback, but also complaints or one-star reviews.' },
@@ -97,7 +97,7 @@ const quizConfig = {
       id: 'leadership',
       title: 'How well are you performing as a leader — creating culture, supporting your team, and focusing on your strengths?',
       category: 'Leadership',
-      introduction: '',
+      introduction: 'Your business can only grow as fast as you do as a leader. If you\'re stuck doing work that drains you or aren\'t developing your leadership skills, you become the ceiling on your company\'s potential.',
       options: [
         { value: 1, text: 'No clarity – I don\'t know how I\'m performing as a leader; I haven\'t had feedback or measured it.' },
         { value: 2, text: 'Reactive leader – I set the tone day to day, but I often get dragged into tasks I\'m not good at.' },
@@ -110,7 +110,7 @@ const quizConfig = {
       id: 'team',
       title: 'How competent are the team who work with you?',
       category: 'Team Competence',
-      introduction: '',
+      introduction: 'You can\'t scale a business on your own—you need a team that drives performance, not just follows orders. Without capable managers who own results and push the company forward, growth requires your constant involvement.',
       options: [
         { value: 1, text: 'No visibility – I don\'t really know how well my team performs; I\'m not tracking or measuring it.' },
         { value: 2, text: 'Dependent on me – The team relies on me for most decisions; without me, progress stalls.' },
@@ -123,7 +123,7 @@ const quizConfig = {
       id: 'systems',
       title: 'How well are your systems defined? Are they efficient and able to flag problems before they grow?',
       category: 'Systems & Processes',
-      introduction: '',
+      introduction: 'Without clear systems, your business runs on chaos and heroics—problems hide until they become crises, and quality depends on who\'s working that day. Documented processes create consistency, catch issues early, and allow you to scale without everything falling apart.',
       options: [
         { value: 1, text: 'Ad-hoc processes – Work gets done, but every person does it differently and we don\'t have regular management meetings.' },
         { value: 2, text: 'Some structure – A few workflows are documented, but most are informal and meetings are irregular or unfocused.' },
