@@ -32,7 +32,7 @@ const quizConfig = {
       id: 'sales',
       title: 'How did your sales in the past 12 months compare to the previous 12 months?',
       category: 'Sales Growth',
-      introduction: 'Growth doesn\'t happen by accident—it requires intentional planning and execution. Your recent sales trend reveals whether your growth strategy is actually working or if you're stuck in place.',
+      introduction: 'Growth doesn\'t happen by accident—it requires intentional planning and execution. Your recent sales trend reveals whether your growth strategy is actually working or if you\'re stuck in place.',
       options: [
         { value: 1, text: 'Declining – Sales have dropped; we\'re shrinking rather than growing.' },
         { value: 2, text: 'Flat – Sales are about the same as the year before; we\'re not growing.' },
@@ -71,7 +71,7 @@ const quizConfig = {
       id: 'salesProcess',
       title: 'If you doubled your leads tomorrow, how confident are you that your sales process would convert them into paying customers?',
       category: 'Sales Process',
-      introduction: 'More leads mean nothing if you can't convert them into customers. A weak sales process wastes your marketing investment and leaves money on the table—no matter how many prospects you attract.',
+      introduction: 'More leads mean nothing if you can\'t convert them into customers. A weak sales process wastes your marketing investment and leaves money on the table—no matter how many prospects you attract.',
       options: [
         { value: 1, text: 'No process – We don\'t have a defined sales process; results depend on me or one key person.' },
         { value: 2, text: 'Inconsistent – We sometimes close sales, but conversion rates are unpredictable.' },
