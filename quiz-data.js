@@ -17,7 +17,7 @@ const quizConfig = {
   questions: [
     {
       id: 'cash',
-      title: 'I know my cash position 8–13 weeks ahead.',
+      title: 'How well do you know your cash position 8–13 weeks ahead.',
       category: 'Cash Flow',
       introduction: 'Cash is the lifeblood of your business. If you can\'t predict your cash position weeks ahead, you\'re flying blind and one unexpected expense or late payment could put you in crisis.', 
       options: [
@@ -82,7 +82,7 @@ const quizConfig = {
     },
     {
       id: 'customerSatisfaction',
-      title: 'How well do you consistently delight customers with your products and service?',
+      title: 'Do you consistently delight customers with your products and service?',
       category: 'Customer Satisfaction',
       introduction: 'Happy customers buy again and refer others—unhappy ones disappear silently or damage your reputation online. Consistent customer delight isn\'t just nice to have; it\'s your most cost-effective growth engine.',
       options: [
