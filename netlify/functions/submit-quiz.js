@@ -11,24 +11,24 @@ const CONVERTKIT_API_URL = 'https://api.convertkit.com/v3';
 const CONVERTKIT_API_SECRET = process.env.CONVERTKIT_API_SECRET;
 
 // Map constraint IDs to tag names
-const constraintTags = {
-  cash: 'constraint-cash-flow',
-  sales: 'constraint-sales-growth',
-  dependency: 'constraint-business-dependency',
-  marketing: 'constraint-marketing-performance',
-  salesProcess: 'constraint-sales-process',
-  customerSatisfaction: 'constraint-customer-satisfaction',
-  leadership: 'constraint-leadership',
-  team: 'constraint-team-competence',
-  systems: 'constraint-systems-processes'
+const constraintTagIds = {
+  cash: '11214248',  
+  sales: '11214251',
+  dependency: '11214282',
+  marketing: '11214284',
+  salesProcess: '11214286',
+  customerSatisfaction: '11214287',
+  leadership: '11214334',
+  team: '11214337',
+  systems: '11214339'
 };
 
 async function addToConvertKit(email, name, constraintType) {
   try {
-    const tagName = constraintTags[constraintType];
+    const tagId = constraintTagIds[constraintType];
     
-    // V4 API with correct header
-    const response = await fetch(`https://api.kit.com/v4/subscribers`, {
+    // Step 1: Add subscriber
+    const subscriberResponse = await fetch(`https://api.kit.com/v4/subscribers`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -36,21 +36,41 @@ async function addToConvertKit(email, name, constraintType) {
       },
       body: JSON.stringify({
         email_address: email,
-        first_name: name,
-        tags: [tagName]
+        first_name: name
       })
     });
 
-    const data = await response.json();
+    const subscriberData = await subscriberResponse.json();
     
-    if (!response.ok) {
-      console.error('ConvertKit V4 error:', data);
-      console.error('Response status:', response.status);
-      throw new Error(data.message || data.error || 'Failed to add to ConvertKit');
+    if (!subscriberResponse.ok) {
+      console.error('ConvertKit subscriber error:', subscriberData);
+      throw new Error('Failed to add subscriber');
     }
 
-    console.log('Successfully added to ConvertKit V4:', email, 'with tag:', tagName);
-    return data;
+    console.log('Successfully added subscriber to Kit:', email);
+
+    // Step 2: Add tag
+    const tagResponse = await fetch(`https://api.kit.com/v4/tags/${tagId}/subscribers`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Kit-Api-Key': CONVERTKIT_API_SECRET
+      },
+      body: JSON.stringify({
+        email_address: email
+      })
+    });
+
+    const tagData = await tagResponse.json();
+    
+    if (!tagResponse.ok) {
+      console.error('ConvertKit tagging error:', tagData);
+      // Don't throw - subscriber was added successfully
+    } else {
+      console.log('Successfully tagged subscriber:', email, 'with tag ID:', tagId);
+    }
+
+    return { subscriberData, tagData };
   } catch (error) {
     console.error('Error adding to ConvertKit:', error.message);
     return null;
