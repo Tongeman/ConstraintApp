@@ -45,6 +45,7 @@ async function addToConvertKit(email, name, constraintType) {
     
     if (!response.ok) {
       console.error('ConvertKit V4 error:', data);
+	  console.error('ConvertKit V4 access:', {CONVERTKIT_API_SECRET});
       console.error('Response status:', response.status);
       throw new Error(data.message || data.error || 'Failed to add to ConvertKit');
     }
