@@ -7,7 +7,6 @@ const supabase = createClient(
 );
 
 // ConvertKit API endpoint
-const CONVERTKIT_API_URL = 'https://api.convertkit.com/v3';
 const CONVERTKIT_API_SECRET = process.env.CONVERTKIT_API_SECRET;
 
 // Map constraint IDs to tag names
@@ -108,10 +107,10 @@ exports.handler = async (event, context) => {
   try {
     // Parse the incoming data
     const data = JSON.parse(event.body);
-    const { name, email, emailConsent, answers } = data;
+    const { name, email, emailConsent, answers, questionnaireVersion } = data;
 
     // Validate required fields
-    if (!name || !email || !answers) {
+    if (!name || !email || !answers || !questionnaireVersion) {
       return {
         statusCode: 400,
         body: JSON.stringify({ error: 'Missing required fields' })
@@ -133,25 +132,31 @@ exports.handler = async (event, context) => {
 
     if (userError) throw userError;
 
-    // Insert quiz responses
-    const { data: responseData, error: responseError } = await supabase
-      .from('quiz_responses')
+    // Insert submission
+    const { data: submissionData, error: submissionError } = await supabase
+      .from('submissions')
       .insert([{
         user_id: userData.id,
-        cash: answers.cash,
-        sales: answers.sales,
-        dependency: answers.dependency,
-        marketing: answers.marketing,
-        sales_process: answers.salesProcess,
-        customer_satisfaction: answers.customerSatisfaction,
-        leadership: answers.leadership,
-        team: answers.team,
-        systems: answers.systems
+        questionnaire_version: questionnaireVersion,
+        primary_constraint: primaryConstraint
       }])
       .select()
       .single();
 
-    if (responseError) throw responseError;
+    if (submissionError) throw submissionError;
+
+    // Insert all responses
+    const responsesToInsert = Object.entries(answers).map(([questionId, answerValue]) => ({
+      submission_id: submissionData.id,
+      question_id: questionId,
+      answer_value: answerValue
+    }));
+
+    const { error: responsesError } = await supabase
+      .from('responses')
+      .insert(responsesToInsert);
+
+    if (responsesError) throw responsesError;
 
     return {
       statusCode: 200,
@@ -159,6 +164,7 @@ exports.handler = async (event, context) => {
         success: true, 
         message: 'Quiz submitted successfully',
         userId: userData.id,
+        submissionId: submissionData.id,
         primaryConstraint: primaryConstraint
       })
     };

@@ -73,28 +73,13 @@
             padding: 40px;
         }
         
-        @media (max-width: 768px) {
-            .content {
-                padding: 20px;
-            }
-            .intro {
-                padding: 20px;
-            }
-            .header {
-                padding: 30px 20px;
-            }
-            .header h1 {
-                font-size: 24px;
-            }
-        }
-        
         .progress-bar {
             width: 100%;
             height: 8px;
             background: #e0e0e0;
             border-radius: 4px;
             overflow: hidden;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
         
         .progress-fill {
@@ -107,7 +92,7 @@
         .progress-text {
             text-align: center;
             color: #666;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             font-size: 14px;
         }
         
@@ -125,7 +110,15 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        .question-introduction {
+        .question-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+		
+		.question-introduction {
             font-size: 18px;
             font-weight: 600;
             color: #666;
@@ -137,97 +130,60 @@
             border-radius: 4px;
         }
         
-        @media (max-width: 768px) {
-            .question-introduction {
-                font-size: 14px;
-                padding: 12px;
-                margin-bottom: 15px;
-            }
-        }
-        
-        .question-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 25px;
-            line-height: 1.4;
-        }
-        
-        @media (max-width: 768px) {
-            .question-title {
-                font-size: 18px;
-                margin-bottom: 20px;
-            }
-        }
-        
-        .answer-buttons {
+        .radio-group {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
         }
         
-        .answer-btn {
-            width: 100%;
-            padding: 16px 20px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: left;
-            font-size: 15px;
-            line-height: 1.5;
-            color: #555;
+        .radio-option {
             display: flex;
             align-items: flex-start;
+            padding: 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
         }
         
-        @media (max-width: 768px) {
-            .answer-btn {
-                padding: 14px 16px;
-                font-size: 14px;
-            }
-        }
-        
-        .answer-btn:hover {
+        .radio-option:hover {
             border-color: #667eea;
             background: #f8f9ff;
             transform: translateX(5px);
         }
         
-        .answer-btn:active {
-            transform: translateX(5px) scale(0.98);
+        .radio-option input[type="radio"] {
+            margin-right: 15px;
+            margin-top: 4px;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
         }
         
-        .answer-btn.selected {
+        .radio-option.selected {
             border-color: #667eea;
             background: #f8f9ff;
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
         }
         
-        .answer-number {
-            font-weight: 600;
-            color: #667eea;
-            margin-right: 12px;
-            flex-shrink: 0;
-            min-width: 20px;
+        .option-text {
+            flex: 1;
+            line-height: 1.6;
+            color: #555;
         }
         
-        .answer-text {
-            flex: 1;
+        .option-number {
+            font-weight: 600;
+            color: #667eea;
+            margin-right: 8px;
         }
         
         .btn-container {
             display: flex;
-            gap: 12px;
-            margin-top: 30px;
-        }
-        
-        @media (max-width: 768px) {
-            .btn-container {
-                margin-top: 20px;
-                gap: 10px;
-            }
+            gap: 15px;
+            margin-top: 40px;
         }
         
         .btn {
@@ -243,20 +199,9 @@
             transition: all 0.3s;
         }
         
-        @media (max-width: 768px) {
-            .btn {
-                padding: 12px 20px;
-                font-size: 15px;
-            }
-        }
-        
         .btn:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-        
-        .btn:active:not(:disabled) {
-            transform: translateY(0);
         }
         
         .btn:disabled {
@@ -292,8 +237,7 @@
             color: #333;
         }
         
-        .form-group input[type="text"],
-        .form-group input[type="email"] {
+        .form-group input {
             width: 100%;
             padding: 12px;
             border: 2px solid #e0e0e0;
@@ -322,15 +266,6 @@
             font-size: 22px;
             margin-top: 30px;
             margin-bottom: 15px;
-        }
-        
-        @media (max-width: 768px) {
-            .results h2 {
-                font-size: 24px;
-            }
-            .results h3 {
-                font-size: 20px;
-            }
         }
         
         .constraint-highlight {
@@ -382,6 +317,7 @@
             margin-bottom: 15px;
         }
     </style>
+	
 </head>
 <body>
     <div class="container">
@@ -427,25 +363,25 @@
                 <p style="text-align: center; margin-bottom: 30px; color: #555;">Enter your details to see your personalized results</p>
                 
                 <form id="emailForm" onsubmit="submitEmail(event)">
-                    <div class="form-group">
-                        <label for="userName">Name</label>
-                        <input type="text" id="userName" required>
-                    </div>
+                      <div class="form-group">
+                           <label for="userName">Name</label>
+                           <input type="text" id="userName" required>
+                      </div>
     
-                    <div class="form-group">
-                        <label for="userEmail">Email</label>
-                        <input type="email" id="userEmail" required>
-                    </div>
+                      <div class="form-group">
+                             <label for="userEmail">Email</label>
+                             <input type="email" id="userEmail" required>
+                      </div>
     
-                    <div class="form-group" style="display: flex; align-items: start; gap: 10px;">
-                        <input type="checkbox" id="emailConsent" required style="margin-top: 4px; width: auto; flex-shrink: 0;">
-                        <label for="emailConsent" style="margin: 0; font-weight: normal; line-height: 1.5;">
-                            I agree to receive my quiz results and helpful emails about growing my business. You can unsubscribe at any time.
-                        </label>
-                    </div>
+                      <div class="form-group" style="display: flex; align-items: start; gap: 10px;">
+                             <input type="checkbox" id="emailConsent" required style="margin-top: 4px; width: auto; flex-shrink: 0;">
+                             <label for="emailConsent" style="margin: 0; font-weight: normal; line-height: 1.5;">
+                                    I agree to receive my quiz results and helpful emails about growing my business. You can unsubscribe at any time.
+                             </label>
+                      </div>
     
-                    <button type="submit" class="btn" style="width: 100%;">View My Results</button>
-                </form>
+                      <button type="submit" class="btn" style="width: 100%;">View My Results</button>
+                 </form>
             </div>
         </div>
         
@@ -470,10 +406,10 @@
         </div>
     </div>
     
-    <script src="quiz-data.js"></script>
+	<script src="quiz-data.js"></script>
     <script>
+        // Quiz data
         const questions = quizConfig.questions;
-        const questionnaireVersion = quizConfig.version;
         
         let currentQuestion = 0;
         let answers = {};
@@ -495,22 +431,25 @@
                 questionDiv.id = `question-${index}`;
                 
                 let optionsHtml = '';
-                q.options.forEach((option) => {
+                q.options.forEach((option, optIndex) => {
                     optionsHtml += `
-                        <button type="button" class="answer-btn" data-question="${index}" data-value="${option.value}" onclick="selectAnswer(${index}, ${option.value})">
-                            <span class="answer-number">${option.value}.</span>
-                            <span class="answer-text">${option.text}</span>
-                        </button>
+                        <label class="radio-option" data-question="${index}" data-value="${option.value}">
+                            <input type="radio" name="q${index}" value="${option.value}" onchange="selectAnswer(${index}, ${option.value})">
+                            <span class="option-text">
+                                <span class="option-number">${option.value}.</span>
+                                ${option.text}
+                            </span>
+                        </label>
                     `;
                 });
                 
                 questionDiv.innerHTML = `
-                    ${q.introduction ? `<div class="question-introduction">${q.introduction}</div>` : ''}
-                    <div class="question-title">${q.title}</div>
-                    <div class="answer-buttons">
-                        ${optionsHtml}
-                    </div>
-                `;
+                     ${q.introduction ? `<div class="question-introduction">${q.introduction}</div>` : ''}
+                     <div class="question-title">${q.title}</div>
+                     <div class="radio-group">
+                          ${optionsHtml}
+                     </div>
+                 `;
                 
                 container.appendChild(questionDiv);
             });
@@ -529,19 +468,12 @@
             answers[questions[questionIndex].id] = value;
             
             // Update visual selection
-            document.querySelectorAll(`[data-question="${questionIndex}"]`).forEach(btn => {
-                btn.classList.remove('selected');
+            document.querySelectorAll(`[data-question="${questionIndex}"]`).forEach(option => {
+                option.classList.remove('selected');
             });
             document.querySelector(`[data-question="${questionIndex}"][data-value="${value}"]`).classList.add('selected');
             
             updateButtons();
-            
-            // Auto-advance to next question after short delay
-            setTimeout(() => {
-                if (currentQuestion < questions.length - 1) {
-                    nextQuestion();
-                }
-            }, 500);
         }
         
         function updateProgress() {
@@ -570,6 +502,7 @@
             if (currentQuestion < questions.length - 1) {
                 showQuestion(currentQuestion + 1);
             } else {
+                // Quiz complete, show email form
                 document.getElementById('quizScreen').classList.add('hidden');
                 document.getElementById('emailScreen').classList.remove('hidden');
             }
@@ -586,13 +519,15 @@
             
             userData.name = document.getElementById('userName').value;
             userData.email = document.getElementById('userEmail').value;
-            userData.emailConsent = document.getElementById('emailConsent').checked;
+			userData.emailConsent = document.getElementById('emailConsent').checked;
             
+            // Disable submit button while processing
             const submitBtn = event.target.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
             submitBtn.textContent = 'Saving...';
             
             try {
+                // Send data to Netlify function
                 const response = await fetch('/.netlify/functions/submit-quiz', {
                     method: 'POST',
                     headers: {
@@ -601,9 +536,8 @@
                     body: JSON.stringify({
                         name: userData.name,
                         email: userData.email,
-                        emailConsent: userData.emailConsent,
-                        answers: answers,
-                        questionnaireVersion: questionnaireVersion
+						emailConsent: userData.emailConsent,
+                        answers: answers
                     })
                 });
                 
@@ -615,6 +549,7 @@
                 
                 console.log('Quiz saved successfully:', result);
                 
+                // Show results
                 calculateResults();
                 document.getElementById('emailScreen').classList.add('hidden');
                 document.getElementById('resultsScreen').classList.remove('hidden');
@@ -628,9 +563,11 @@
         }
         
         function calculateResults() {
+            // Find the lowest score (primary constraint)
             let lowestScore = 5;
             let primaryConstraintId = null;
             
+            // Check each answer in order (for tie-breaking)
             questions.forEach(q => {
                 const score = answers[q.id];
                 if (score < lowestScore) {
@@ -641,9 +578,11 @@
             
             const primaryConstraint = questions.find(q => q.id === primaryConstraintId);
             
+            // Display primary constraint
             document.getElementById('primaryConstraint').textContent = `Your Primary Constraint: ${primaryConstraint.category}`;
             document.getElementById('constraintDescription').textContent = `Based on your responses, ${primaryConstraint.category.toLowerCase()} is the biggest bottleneck limiting your business growth right now.`;
             
+            // Display all scores
             let scoresHtml = '';
             questions.forEach(q => {
                 const score = answers[q.id];
@@ -656,38 +595,49 @@
             });
             document.getElementById('scoresSummary').innerHTML = scoresHtml;
             
+            // Generate recommendations based on constraint
             const recommendations = getRecommendations(primaryConstraintId, lowestScore);
             document.getElementById('recommendationsText').innerHTML = recommendations;
         }
         
         function getRecommendations(constraintId, score) {
-            const rec = quizConfig.recommendations[constraintId];
-            
-            if (!rec) {
-                return '<p>Focus on improving this area to unlock your business growth.</p>';
-            }
-            
-            return `
-                <p><strong>${rec.description}</strong></p>
-                <p><strong>Quick wins:</strong> ${rec.quickWins}</p>
-                <p><strong>Next level:</strong> ${rec.nextLevel}</p>
-            `;
-        }
+    // Get recommendation from quiz-data.js
+    const rec = quizConfig.recommendations[constraintId];
+    
+    if (!rec) {
+        return '<p>Focus on improving this area to unlock your business growth.</p>';
+    }
+    
+    return `
+        <p><strong>${rec.description}</strong></p>
+        <p><strong>Quick wins:</strong> ${rec.quickWins}</p>
+        <p><strong>Next level:</strong> ${rec.nextLevel}</p>
+    `;
+}
         
         function resetQuiz() {
             currentQuestion = 0;
             answers = {};
             userData = {};
             
-            document.querySelectorAll('.answer-btn').forEach(btn => {
-                btn.classList.remove('selected');
+            // Reset all radio buttons
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.checked = false;
             });
             
+            // Reset visual selections
+            document.querySelectorAll('.radio-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Reset form
             document.getElementById('emailForm').reset();
             
+            // Show intro screen
             document.getElementById('resultsScreen').classList.add('hidden');
             document.getElementById('introScreen').classList.remove('hidden');
         }
     </script>
 </body>
 </html>
+            
