@@ -1,5 +1,6 @@
 // Quiz Configuration and Data
 const quizConfig = {
+  version: "ConstraintApp2",
   title: "Find Your Business Growth Constraint",
   introduction: {
     paragraphs: [
@@ -86,7 +87,7 @@ const quizConfig = {
       category: 'Customer Satisfaction',
       introduction: 'Happy customers buy again and refer others—unhappy ones disappear silently or damage your reputation online. Consistent customer delight isn\'t just nice to have; it\'s your most cost-effective growth engine.',
       options: [
-        { value: 1, text: 'No visibility – I don\'t know — we don\'t track customer satisfaction, reviews, or repeat business.' },
+        { value: 1, text: 'No visibility – I don\'t know – we don\'t track customer satisfaction, reviews, or repeat business.' },
         { value: 2, text: 'Mixed signals – We get some positive feedback, but also complaints or one-star reviews.' },
         { value: 3, text: 'Generally satisfied – Most customers seem happy, but delight is inconsistent and repeat business is patchy.' },
         { value: 4, text: 'Consistently positive – We reliably get good reviews, repeat purchases, and strong customer satisfaction.' },
@@ -95,7 +96,7 @@ const quizConfig = {
     },
     {
       id: 'leadership',
-      title: 'How well are you performing as a leader — creating culture, supporting your team, and focusing on your strengths?',
+      title: 'How well are you performing as a leader – creating culture, supporting your team, and focusing on your strengths?',
       category: 'Leadership',
       introduction: 'Your business can only grow as fast as you do as a leader. If you\'re stuck doing work that drains you or aren\'t developing your leadership skills, you become the ceiling on your company\'s potential.',
       options: [
